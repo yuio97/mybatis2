@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scit.mybatis2.mapper.EmployeeMapper">
+
+	<select id="getAll" resultMap="employeeMap">
+		SELECT * FROM employee e INNER JOIN r_emp_proj rep ON e.employee_id = rep.r_emp_id
+		INNER JOIN project p ON rep.r_proj_id = p.project_id
+	</select>
+	
+	<resultMap type="com.scit.mybatis2.bean.Employee" id="employeeMap">
+		<id column="employee_id" property="employeeId" />
+		<result column="employee_name" property="employeeName" />
+		<result column="employee_desc" property="employeeDesc"  />
+		<!-- column为中间表与另外一张表的外键  -->
+		<collection column="r_proj_id" property="projects" ofType="com.scit.mybatis2.bean.Project">
+			<id column="project_id" property="projectId" />
+			<result column="project_name" property="projectName" />
+			<result column="project_desc" property="projectDesc" />
+		</collection>
+	</resultMap>
+</mapper>

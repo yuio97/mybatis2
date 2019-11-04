@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scit.mybatis2.mapper.StuMapper">
+
+	<select id="getStu" resultMap="stuMap">
+		SELECT * FROM stu s INNER JOIN classes c ON s.classes_id = c.class_id WHERE s.stu_id = ${id}
+	</select>
+	
+	<select id="getClassList" resultMap="classMap">
+		SELECT * FROM stu s INNER JOIN classes c ON s.classes_id = c.class_id 
+	</select>
+	
+	<select id="getStuCount" resultType="java.lang.Integer">
+		SELECT count(*) FROM stu 
+	</select>
+	
+	<!-- //获取主键值 -->
+	<insert id="addStu" useGeneratedKeys="true" keyProperty="s.stuId" >
+		insert into stu values(null,#{s.stuName},#{s.classes.classId})
+	</insert>
+	
+	<select id="getCourse" resultMap="courseMap">
+		SELECT * FROM stu s 
+		INNER JOIN stu_course sc on s.stu_id = sc.stu_id 
+		INNER JOIN course c ON c.course_id = sc.course_id
+	</select>
+	
+	<select id="getStuByCourse" resultMap="courseStuMap">
+		SELECT * FROM stu s 
+		INNER JOIN stu_course sc on s.stu_id = sc.stu_id 
+		INNER JOIN course c ON c.course_id = sc.course_id
+	</select>
+
+	<select id="getStuByName" resultType="com.scit.mybatis2.bean.Stu">
+		select * from stu s
+		<where>
+			<if test="s.stuName != null">
+				stu_name like concat('%',#{s.stuName},'%')
+			</if>
+		</where>
+		
+		
+	</select>
+	
+	
+
+	<resultMap type="com.scit.mybatis2.bean.Stu" id="courseMap">
+		<id column="stu_id" property="stuId"/>
+		<result column="stu_name" property="stuName"/>
+		<collection property="course" column="course_id" ofType="com.scit.mybatis2.bean.Course">
+			<id column="course_id" property="id"/>
+			<result column="course_name" property="name"/>
+		</collection>
+	</resultMap>
+
+		<resultMap type="com.scit.mybatis2.bean.Course" id="courseStuMap">
+			<id column="course_id" property="id"/>
+			<result column="course_name" property="name"/>
+		<collection property="stu" column="stu_id" ofType="com.scit.mybatis2.bean.Stu">
+			<id column="stu_id" property="stuId"/>
+		<result column="stu_name" property="stuName"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.scit.mybatis2.bean.Classes" id="classMap">
+		<id column="class_id" property="classId"/>
+		<result column="class_name"	property="className"/>
+		<result column="class_info" property="classInfo"/>
+		<collection property="stus" column="class_id" ofType="com.scit.mybatis2.bean.Stu">
+			<id column="stu_id" property="stuId"/>
+			<result column="stu_name" property="stuName"/>
+			
+		</collection>
+	</resultMap>
+		
+	
+	<resultMap type="com.scit.mybatis2.bean.Stu" id="stuMap">
+		<id column="stu_id" property="stuId"/>
+		<result column="stu_name" property="stuName"/>
+		<association property="classes" column="classes_id" javaType="com.scit.mybatis2.bean.Classes">
+			<id column="class_id" property="classId"/>
+			<result column="class_name" property="className"/>
+			<result column="class_info" property="classInfo"/>
+			
+		</association>
+		
+	</resultMap>
+</mapper>
