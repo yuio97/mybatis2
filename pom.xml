@@ -12,7 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UF-8</project.build.sourceEncoding>
-    <a>aaaaaaOA</a>
+    <a>aaaaOA</a>sss
  </properties>
 
   <dependencies>
