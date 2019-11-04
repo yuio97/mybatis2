@@ -11,8 +11,9 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <project.build.sourceEncoding>UF-8</project.build.sourceEncoding>
-    <a>aaaaaaOA</a>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <a>aaaaaaOAsdfgjhfgjfjh222dssdsd</a>
+   
  </properties>
 
   <dependencies>
